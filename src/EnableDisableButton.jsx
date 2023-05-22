@@ -21,11 +21,17 @@ function EnableDisableButton({ onSubmit }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [isEnable, setEnable] = useState(true);
+    const [error, setError] = useState(false);
     const [ShowLoginButton, setShowLoginButton] = useState(true)
     const [ShowLogoutButton, setShowLogoutButton] = useState(false)
     const handleKeyUp = () => {
-        if (username.length > 0 && password.length > 0) setEnable(false);
-        else setEnable(true);
+        if (username.length > 0 && password.length > 0){
+            setEnable(false);
+            setError(true)
+        } else {
+            setEnable(true)
+            setError(false)
+        };
     };
     const clientId = "70337116168-tqvgute4k5t4ieg61egdndraud548fna.apps.googleusercontent.com";
 
@@ -47,7 +53,7 @@ function EnableDisableButton({ onSubmit }) {
           await loadGapiInsideDOM();
         })();
       });
-    
+
     return (
         <div>
             <label>User Name</label>
@@ -59,6 +65,7 @@ function EnableDisableButton({ onSubmit }) {
                 onKeyUp={handleKeyUp}
                 onChange={(event) => setUsername(event.target.value)}
             />
+            {error && <p style={{color:"red"}}>Field is required.</p>}
             <br />
             <br />
             <label>Password</label>
@@ -70,6 +77,7 @@ function EnableDisableButton({ onSubmit }) {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
             />
+            {error && <p style={{color:"red"}}>Field is required.</p>}
             <br />
             <br />
             <button
@@ -77,23 +85,23 @@ function EnableDisableButton({ onSubmit }) {
                 id="button-input"
                 disabled={isEnable}
                 onClick={() => onSubmit(username, password)}
+                style={{color: error ?  "blue" : "red"}}
             >
                 Register
             </button>
-            <GoogleLogin
+            {/* <GoogleLogin
                 clientId={clientId}
                 buttonText="Login"
                 onSuccess={onLoginSuccess}
                 onFailure={onLoginFailure}
                 cookiePolicy={'single_host_origin'}
             />
-
             <GoogleLogout
                 clientId={clientId}
                 buttonText="Logout"
                 onLogoutSuccess={signOutSuccess}
-            />
-           
+            /> */}
+            
         </div>
     );
 }
